@@ -38,4 +38,10 @@ public class templatesController {
         model.addAttribute("paises", paises);
         return "views/atributos";
     }
+
+    @GetMapping("/estaticos")
+    public String estaticos(Model model){
+        model.addAttribute("title", "Estaticos");
+        return "views/estaticos";
+    }
 }
