@@ -3,12 +3,13 @@ package altamirano.hernandez.app1_springboot_2025.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping("/productos")
 public class ProductoController {
 
@@ -77,5 +78,11 @@ public class ProductoController {
         String email = env.getProperty("datos.email");
         json.put("email", email);
         return json;
+    }
+
+    //Prueba de retorno de vista
+    @GetMapping("/home")
+    public String home(){
+        return "producto/home";
     }
 }
