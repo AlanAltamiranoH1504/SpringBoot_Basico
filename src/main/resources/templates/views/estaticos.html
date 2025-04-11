@@ -1,28 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-  <title>Atributos</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <title>Atributos</title>
 </head>
 <body>
-<div class="container-xl mt-5">
-  <div class="row d-flex justify-content-center">
-    <div class="col-md-6 bg-success rounded">
-      <h2 th:text="${title}" class="fw-bold text-white text-center text-uppercase py-2"></h2>
-    </div>
-  </div>
+    <div class="container-xl mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6">
+                <div th:replace="layouts/header:: header"></div>
+            </div>
+        </div>
 
-  <div class="row mt-5 d-flex justify-content-center">
-    <div class="col-md-8 rounded">
-      <div class="d-flex justify-content-center align-items-center">
-        <img th:src="@{/img/img.png}" alt="imagen" class="img-fluid">
-      </div>
+<!--        <div class="row mt-5 d-flex justify-content-center">-->
+<!--            <div class="col-md-8 rounded">-->
+<!--                <div class="d-flex justify-content-center align-items-center">-->
+<!--                    <img th:src="@{/img/img.png}" alt="imagen" class="img-fluid">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
-  </div>
-</div>
 
-  <div th:replace="layouts/footer:: footer"></div>
+    <div class="container-xl">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6">
+                <form action="/" method="post" id="form_producto">
+                    <div class="mb-4 mt-3">
+                        <label for="nombre" class="form-label">Nombre Producto:</label>
+                        <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre del producto">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripcion: </label>
+                        <input type="text" name="descripcion" id="descripcion" class="form-control" placeholder="Descripcion del producto">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="precio" class="form-label">Precio: </label>
+                        <input type="number" name="precio" id="precio" class="form-control">
+                    </div>
+
+                    <div class="mb-3 d-flex justify-content-center">
+                        <input type="submit" class="btn btn-primary w-50 px-5 py-2 text-white fw-bold text-uppercase" value="Registrar">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-xl">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-md-10">
+                <div th:replace="layouts/footer:: footer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/estaticos.js"></script>
 </body>
 </html>
