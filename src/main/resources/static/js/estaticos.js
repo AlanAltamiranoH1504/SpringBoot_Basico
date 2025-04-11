@@ -26,6 +26,25 @@ document.addEventListener("DOMContentLoaded", () => {
           descripcion,
           precio
         };
-        console.log(producto)
+
+        saveProducto(producto);
+        // console.log(producto)
+    }
+
+    function saveProducto(producto) {
+        fetch("/productos/save", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(producto)
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            console.log(data);
+        }).catch((error) => {
+            console.log("Error en la peticion");
+            console.log(error.message);
+        })
     }
 });

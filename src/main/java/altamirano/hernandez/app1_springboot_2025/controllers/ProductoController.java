@@ -1,5 +1,6 @@
 package altamirano.hernandez.app1_springboot_2025.controllers;
 
+import altamirano.hernandez.app1_springboot_2025.models.Producto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping("/productos")
 public class ProductoController {
 
@@ -84,5 +85,16 @@ public class ProductoController {
     @GetMapping("/home")
     public String home(){
         return "producto/home";
+    }
+
+    //Save producto en la base de datos
+    @PostMapping("/save")
+    @ResponseBody
+    public Map<String, Object> save(@RequestBody Producto producto){
+        Map<String, Object> json = new HashMap<>();
+        json.put("estado", "producto recbido");
+        json.put("nombr", producto.getNombre());
+
+        return json;
     }
 }
