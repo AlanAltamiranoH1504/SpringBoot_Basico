@@ -1,6 +1,7 @@
 package altamirano.hernandez.app1_springboot_2025.controllers;
 
 import altamirano.hernandez.app1_springboot_2025.models.Producto;
+import altamirano.hernandez.app1_springboot_2025.services.InterfaceProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -13,6 +14,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/productos")
 public class ProductoController {
+    @Autowired
+    private InterfaceProductoService productoService;
 
     //Variables globales de ambiente
     @Value("${datos.nombre}")
@@ -91,9 +94,13 @@ public class ProductoController {
     @PostMapping("/save")
     public Map<String, Object> save(@RequestBody Producto producto){
         Map<String, Object> json = new HashMap<>();
-        json.put("code", "200");
-        json.put("message", "Producto agregado correctamente");
-
+        try{
+            productoService.save(producto);
+            json.put("code", "200");
+            json.put("message", "Producto agregado correctamente");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return json;
     }
 }

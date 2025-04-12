@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
             mensajeAlerta.classList.add("text-center", "text-uppercase", "px-3", "py-2", "text-white");
             mensajeAlerta.textContent = "Nombre del producto vacio";
 
-
             seccionAlertas.classList.add("bg-danger", "fw-bold", "rounded");
             seccionAlertas.appendChild(mensajeAlerta);
             setTimeout(() => {
@@ -29,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const mensajeAlerta = document.createElement("p");
             mensajeAlerta.classList.add("text-center", "text-uppercase", "px-3", "py-2", "text-white");
             mensajeAlerta.textContent = "Descripcion del producto vacia";
-
 
             seccionAlertas.classList.add("bg-danger", "fw-bold", "rounded");
             seccionAlertas.appendChild(mensajeAlerta);
