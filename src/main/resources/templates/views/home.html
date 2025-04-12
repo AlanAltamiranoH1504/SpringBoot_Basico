@@ -9,10 +9,76 @@
 <body>
     <div class="container-xl mt-5">
         <div class="row d-flex justify-content-center">
-            <div class="col-md-6 bg-success rounded">
+            <div class="col-md-10 bg-success rounded">
                 <h2 th:text="${title}" class="fw-bold text-white text-center text-uppercase py-2"></h2>
             </div>
         </div>
     </div>
+
+    <div class="container-xl mt-3">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-9 mt-3">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#nuevoProducto" class="btn btn-outline-primary px-3 py-2 fw-bold text-uppercase w-100">Agregar Producto</button>
+                <table class="table table-dark text-center table-striped table-hover mt-3">
+                    <thead class="thead-dark text-uppercase fw-bold">
+                        <tr>
+                            <td>ID</td>
+                            <td>Nombre</td>
+                            <td>Descripcion</td>
+                            <td>Precio</td>
+                            <td>Opciones</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Computadora ASUS TUF 15</td>
+                            <td>Computadora Gamming</td>
+                            <td>$20,000</td>
+                            <td>IDK</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--Ventana modal-->
+    <div class="modal fade" id="nuevoProducto" aria-labelledby="miModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title text-center fw-bold">Agregar Producto Nuevo</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="w-100 mt-3" id="alertas"></div>
+                    <form action="" method="post">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label fw-bold text-uppercase">Nombre</label>
+                            <input type="text" name="nombre" id="nombre" class="form-control py-2" placeholder="Nombre del producto">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label fw-bold text-uppercase">Descripcion</label>
+                            <input type="text" name="descripcion" id="descripcion" class="form-control py-2" placeholder="Descripcion del producto">
+                        </div>
+                        <div class="mb-3">
+                            <label for="precio" class="form-label fw-bold text-uppercase">Precio</label>
+                            <input type="text" name="precio" id="precio" class="form-control py-2" placeholder="Precio del producto">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="sendForm" class="btn btn-success fw-bold text-uppercase px-3 py-2">Registrar</button>
+                    <button type="button" class="btn btn-secondary fw-bold text-uppercase px-3 py-2" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div th:replace="layouts/footer:: footer"></div>
+    </footer>
+    <script src="/js/Productos.js"></script>
 </body>
 </html>

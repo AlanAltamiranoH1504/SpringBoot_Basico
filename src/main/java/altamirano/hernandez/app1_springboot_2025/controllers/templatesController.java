@@ -15,7 +15,7 @@ public class templatesController {
 
     @GetMapping("/home")
     public String home(Model model) {
-        model.addAttribute("title", "Home Page");
+        model.addAttribute("title", "Paginacion de Inicio SpringBoot MVC");
         return "views/home";
     }
 

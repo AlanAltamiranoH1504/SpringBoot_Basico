@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/productos")
 public class ProductoController {
 
@@ -89,11 +89,10 @@ public class ProductoController {
 
     //Save producto en la base de datos
     @PostMapping("/save")
-    @ResponseBody
     public Map<String, Object> save(@RequestBody Producto producto){
         Map<String, Object> json = new HashMap<>();
-        json.put("estado", "producto recbido");
-        json.put("nombr", producto.getNombre());
+        json.put("code", "200");
+        json.put("message", "Producto agregado correctamente");
 
         return json;
     }
