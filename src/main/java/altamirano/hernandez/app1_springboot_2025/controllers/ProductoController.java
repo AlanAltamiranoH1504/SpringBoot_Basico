@@ -4,8 +4,8 @@ import altamirano.hernandez.app1_springboot_2025.models.Producto;
 import altamirano.hernandez.app1_springboot_2025.services.InterfaceProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -110,6 +110,20 @@ public class ProductoController {
             productoService.save(producto);
             json.put("code", "200");
             json.put("message", "Producto agregado correctamente");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return json;
+    }
+
+    //Elimina un producto
+    @PostMapping("/delete")
+    public Map<String, Object> delete(@RequestBody Producto producto){
+        Map<String, Object> json = new HashMap<>();
+        try{
+            productoService.deleteById(producto.getId());
+            json.put("code", "200");
+            json.put("msg", "Producto eliminado correctamente");
         }catch (Exception e){
             e.printStackTrace();
         }

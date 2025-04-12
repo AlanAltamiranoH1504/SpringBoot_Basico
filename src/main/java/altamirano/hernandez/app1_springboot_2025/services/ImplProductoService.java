@@ -41,6 +41,6 @@ public class ImplProductoService implements InterfaceProductoService {
 
     @Override
     public void deleteById(int id) {
-
+        productoRepository.deleteById(id);
     }
 }
