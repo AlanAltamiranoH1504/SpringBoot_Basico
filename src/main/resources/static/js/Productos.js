@@ -70,14 +70,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }).then((response) => {
             return response.json();
         }).then((data) => {
-            const {code} = data;
-            if (code == 200) {
+            const {errors} = data;
+            if (errors){
+                alertasErrores(errors);
+            }else{
                 mostrarAlertas("Producto guardado correctamente", true);
                 limpiarInputs();
                 tbody_productos.innerHTML = "";
                 listBackeEnd();
-            } else {
-                console.log("Guardado incrrecto");
             }
         }).catch((e) => {
             console.log("Error en peticion al back");
@@ -110,6 +110,20 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             console.log("Alerta mala");
         }
+    }
+
+    function alertasErrores(errores) {
+        const mensajesError = Object.values(errores);
+        const seccionAlertas = document.querySelector("#alertas");
+        mensajesError.forEach((error) => {
+            const parrafoError = document.createElement("p");
+            parrafoError.classList.add("text-center", "text-uppercase", "px-3", "py-2", "text-white", "bg-danger", "mb-3", "rounded", "fw-bold");
+            parrafoError.textContent = error;
+            seccionAlertas.appendChild(parrafoError);
+            setTimeout(() => {
+                seccionAlertas.innerHTML = "";
+            }, 3000);
+        });
     }
 
     function limpiarInputs() {

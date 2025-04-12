@@ -1,6 +1,9 @@
 package altamirano.hernandez.app1_springboot_2025.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
@@ -10,8 +13,14 @@ public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @NotBlank(message = "El nombre del producto no puede estar vacio")
+    @Size(min = 5, max = 90, message = "El nombre del producto debe ser mayor a 5 y menor o igual a 90 caracteres")
     private String nombre;
+    @NotBlank(message = "La descripcion del producto no puede estar vacia")
+    @Size(min = 5, max = 90, message = "La descripcion del producto debe ser mayor a 5 y menor o igual a 90 caracteres")
     private String descripcion;
+    @Positive(message = "El precio debe ser mayor a $0.00")
     private String precio;
 
     public Producto(){

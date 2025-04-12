@@ -2,10 +2,12 @@ package altamirano.hernandez.app1_springboot_2025.controllers;
 
 import altamirano.hernandez.app1_springboot_2025.models.Producto;
 import altamirano.hernandez.app1_springboot_2025.services.InterfaceProductoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.core.env.Environment;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -104,14 +106,19 @@ public class ProductoController {
 
     //Save producto en la base de datos
     @PostMapping("/save")
-    public Map<String, Object> save(@RequestBody Producto producto){
+    public Map<String, Object> save(@Valid @RequestBody Producto producto, BindingResult bindingResult){
         Map<String, Object> json = new HashMap<>();
-        try{
+        //Validacion de errores
+        if (bindingResult.hasErrors()){
+            Map<String, Object> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> {
+                errors.put(error.getField(), error.getDefaultMessage());
+            });
+            json.put("errors", errors);
+        }else{
             productoService.save(producto);
             json.put("code", "200");
             json.put("message", "Producto agregado correctamente");
-        }catch (Exception e){
-            e.printStackTrace();
         }
         return json;
     }
