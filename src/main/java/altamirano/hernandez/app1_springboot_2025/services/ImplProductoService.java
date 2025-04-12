@@ -5,6 +5,7 @@ import altamirano.hernandez.app1_springboot_2025.repositories.InterfaceproductoR
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,7 +15,8 @@ public class ImplProductoService implements InterfaceProductoService {
 
     @Override
     public List<Producto> findAll() {
-        return List.of();
+        List<Producto> productos = (List<Producto>) productoRepository.findAll();
+        return productos;
     }
 
     @Override

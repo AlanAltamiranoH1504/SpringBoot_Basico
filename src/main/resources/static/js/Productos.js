@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
+    cargarProductos();
+
     const btnFormulario = document.querySelector("#sendForm");
     const seccionAlertas = document.querySelector("#alertas");
+    const tbody_productos = document.querySelector("#tbody-productos");
     btnFormulario.addEventListener("click", formularioEnviado);
 
     function formularioEnviado(e) {
@@ -69,6 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const {code} = data;
             if (code == 200) {
                 mostrarAlertas("Producto guardado correctamente", true);
+                tbody_productos.innerHTML = "";
+                cargarProductos();
             }else{
                 console.log("Guardado incrrecto");
             }
@@ -91,5 +96,36 @@ document.addEventListener("DOMContentLoaded", () => {
         }else{
             console.log("Alerta mala");
         }
+    }
+
+    function cargarProductos() {
+        fetch("/productos/list", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            const {productos} = data;
+            listarProductos(productos);
+        }).catch((error) => {
+            console.log("Error en la peticion");
+            console.log(e.message);
+        })
+    }
+
+    function listarProductos(productos) {
+
+        productos.forEach((producto) => {
+            const tr_producto = document.createElement("tr");
+            tr_producto.innerHTML = `
+                <td>${producto.id}</td>
+                <td>${producto.nombre}</td>
+                <td>${producto.descripcion}</td>
+                <td>$ ${producto.precio}</td>
+            `;
+            tbody_productos.appendChild(tr_producto);
+        });
     }
 });

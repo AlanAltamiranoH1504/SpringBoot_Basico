@@ -90,6 +90,18 @@ public class ProductoController {
         return "producto/home";
     }
 
+    //Listado de productos
+    @GetMapping("/list")
+    public Map<String, Object> list(){
+        Map<String, Object> json = new HashMap<>();
+        try {
+            json.put("productos", productoService.findAll());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return json;
+    }
+
     //Save producto en la base de datos
     @PostMapping("/save")
     public Map<String, Object> save(@RequestBody Producto producto){
