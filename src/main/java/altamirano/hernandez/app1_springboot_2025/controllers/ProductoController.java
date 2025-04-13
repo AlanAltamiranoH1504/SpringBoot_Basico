@@ -88,17 +88,17 @@ public class ProductoController {
 
     //Prueba de retorno de vista
     @GetMapping("/home")
-    public String home(){
+    public String home() {
         return "producto/home";
     }
 
     //Listado de productos
     @GetMapping("/list")
-    public Map<String, Object> list(){
+    public Map<String, Object> list() {
         Map<String, Object> json = new HashMap<>();
         try {
             json.put("productos", productoService.findAll());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return json;
@@ -106,16 +106,16 @@ public class ProductoController {
 
     //Save producto en la base de datos
     @PostMapping("/save")
-    public Map<String, Object> save(@Valid @RequestBody Producto producto, BindingResult bindingResult){
+    public Map<String, Object> save(@Valid @RequestBody Producto producto, BindingResult bindingResult) {
         Map<String, Object> json = new HashMap<>();
         //Validacion de errores
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             Map<String, Object> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> {
                 errors.put(error.getField(), error.getDefaultMessage());
             });
             json.put("errors", errors);
-        }else{
+        } else {
             productoService.save(producto);
             json.put("code", "200");
             json.put("message", "Producto agregado correctamente");
@@ -125,14 +125,49 @@ public class ProductoController {
 
     //Elimina un producto
     @PostMapping("/delete")
-    public Map<String, Object> delete(@RequestBody Producto producto){
+    public Map<String, Object> delete(@RequestBody Producto producto) {
         Map<String, Object> json = new HashMap<>();
-        try{
+        try {
             productoService.deleteById(producto.getId());
             json.put("code", "200");
             json.put("msg", "Producto eliminado correctamente");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
+        }
+        return json;
+    }
+
+    //Busca el producto a editar
+    @PostMapping("/findById")
+    public Map<String, Object> findById(@RequestBody Producto producto) {
+        Map<String, Object> json = new HashMap<>();
+        Producto productoFind = productoService.findyById(producto.getId());
+        if (productoFind != null) {
+            json.put("code", "200");
+            json.put("producto", productoFind);
+        } else {
+            json.put("code", "404");
+            json.put("producto", producto);
+            json.put("status", "Recurso no encontrado");
+        }
+        return json;
+    }
+
+    //Actualiza el producto en la base de datos
+    @PostMapping("/update")
+    public Map<String, Object> update(@Valid @RequestBody Producto producto, BindingResult bindingResult){
+        Map<String, Object> json = new HashMap<>();
+        if (bindingResult.hasErrors()){
+            Map<String, Object> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> {
+                errors.put(error.getField(), error.getDefaultMessage());
+                json.put("errors", errors);
+                json.put("producto", producto);
+            });
+        }else{
+            productoService.update(producto.getId(), producto);
+            json.put("code", "200");
+            json.put("status", "Producto actualizado correctamente");
         }
         return json;
     }

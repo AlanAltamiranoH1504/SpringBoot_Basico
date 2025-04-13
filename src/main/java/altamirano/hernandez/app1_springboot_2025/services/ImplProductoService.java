@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImplProductoService implements InterfaceProductoService {
@@ -21,7 +22,8 @@ public class ImplProductoService implements InterfaceProductoService {
 
     @Override
     public Producto findyById(int id) {
-        return null;
+        Producto producto = productoRepository.findById(id).get();
+        return producto;
     }
 
     @Override
@@ -31,7 +33,11 @@ public class ImplProductoService implements InterfaceProductoService {
 
     @Override
     public void update(int id, Producto producto) {
-
+        Optional<Producto> productoActualizar = productoRepository.findById(id);
+        productoActualizar.get().setNombre(producto.getNombre());
+        productoActualizar.get().setDescripcion(producto.getDescripcion());
+        productoActualizar.get().setPrecio(producto.getPrecio());
+        productoRepository.save(productoActualizar.get());
     }
 
     @Override

@@ -71,6 +71,40 @@
         </div>
     </div>
 
+    <!-- Modal de edicion -->
+    <div class="modal fade" id="actualizarProducto" aria-labelledby="miModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title text-center fw-bold">Actualizar Producto Producto</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="w-100 mt-3" id="alertasActualizacion"></div>
+                    <form action="" method="post">
+                            <input type="hidden" name="idupdate" >
+                        <div class="mb-3">
+                            <label for="nombreActualizado" class="form-label fw-bold text-uppercase">Nombre</label>
+                            <input type="text" name="nombreActualizado" id="nombreActualizado" class="form-control py-2" placeholder="Nombre nuevo del producto">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcionActualizada" class="form-label fw-bold text-uppercase">Descripcion</label>
+                            <input type="text" name="descripcionActualizada" id="descripcionActualizada" class="form-control py-2" placeholder="Descripcion actualizada del producto">
+                        </div>
+                        <div class="mb-3">
+                            <label for="precioActualizado" class="form-label fw-bold text-uppercase">Precio</label>
+                            <input type="text" name="precioActualizado" id="precioActualizado" class="form-control py-2" placeholder="Precio actualizado del producto">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="sendFormUpdate" class="btn btn-success fw-bold text-uppercase px-3 py-2">Actualizar</button>
+                    <button type="button" class="btn btn-secondary fw-bold text-uppercase px-3 py-2" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div th:replace="layouts/footer:: footer"></div>
     </footer>
