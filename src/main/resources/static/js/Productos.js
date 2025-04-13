@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const seccionAlertas = document.querySelector("#alertas");
     const seccionAlertasFuera = document.querySelector("#alertas_fuera");
     const tbody_productos = document.querySelector("#tbody-productos");
+    const seccionAlertasUpdate = document.querySelector("#errores_actualizacion");
     btnFormulario.addEventListener("click", formularioEnviado);
 
     function formularioEnviado(e) {
@@ -126,6 +127,22 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    function alertasActualizacion(errores){
+        seccionAlertasUpdate.innerHTML = "";
+        const {errors} = errores;
+        const mensajesErrores = Object.values(errors);
+
+        mensajesErrores.forEach((error) => {
+            const parrafoError = document.createElement("p");
+            parrafoError.classList.add("text-center", "text-uppercase", "px-3", "py-2", "text-white", "bg-danger", "mb-3", "rounded", "fw-bold");
+            parrafoError.textContent = error;
+            seccionAlertasUpdate.appendChild(parrafoError);
+            setTimeout(() => {
+                seccionAlertasUpdate.innerHTML = "";
+            }, 3000);
+        });
+    }
+
     function limpiarInputs() {
         document.querySelector("#nombre").value = "";
         document.querySelector("#descripcion").value = "";
@@ -230,7 +247,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function llenarFormularioEdicion(data) {
-        console.log(data.producto);
         const modalActualizacion = new bootstrap.Modal(document.querySelector("#actualizarProducto"));
         modalActualizacion.show();
         document.querySelector("#nombreActualizado").value = data.producto.nombre;
@@ -247,6 +263,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const nombreUpdate = document.querySelector("#nombreActualizado").value;
         const descripcionUpdate = document.querySelector("#descripcionActualizada").value;
         const precioUpdate = document.querySelector("#precioActualizado").value;
+
+        if (nombreUpdate.trim() === "" || nombreUpdate == null){
+            return;
+        }
+        if (descripcionUpdate.trim() === "" || descripcionUpdate == null){
+            return;
+        }
+        if (precioUpdate.trim() === "" || precioUpdate == null){
+            return;
+        }
+
         const productoActualizar = {
             id: data.producto.id,
             nombre: nombreUpdate,
@@ -262,6 +289,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }).then((response) => {
             return response.json();
         }).then((data) => {
+            if(data.errors) {
+                alertasActualizacion(data);
+                return;
+            }
             nombreUpdate.textContent = "";
             descripcionUpdate.textContent = "";
             precioUpdate.textContent = "";
