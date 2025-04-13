@@ -6,7 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const seccionAlertasFuera = document.querySelector("#alertas_fuera");
     const tbody_productos = document.querySelector("#tbody-productos");
     const seccionAlertasUpdate = document.querySelector("#errores_actualizacion");
+    const formArchivos = document.querySelector("#form_archivos");
     btnFormulario.addEventListener("click", formularioEnviado);
+    formArchivos.addEventListener("submit", formularioArchivosEnviado);
 
     function formularioEnviado(e) {
         e.preventDefault();
@@ -303,5 +305,25 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Error en la peticion");
             console.log(error.message);
         });
+    }
+
+    function formularioArchivosEnviado(e){
+        e.preventDefault();
+        const archivo = document.querySelector("#archivos").files[0];
+        const formData = new FormData();
+        formData.append("archivo", archivo);
+
+        fetch("/productos/upload-archivos", {
+            method: "POST",
+            body: formData
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            console.log(data)
+            alert("Archivo cargado correctamente");
+        }).catch((e) => {
+            console.log("Errror en la peticion");
+            console.log(e.message);
+        })
     }
 });

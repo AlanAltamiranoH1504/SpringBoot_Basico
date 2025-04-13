@@ -9,7 +9,10 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.core.env.Environment;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -155,19 +158,48 @@ public class ProductoController {
 
     //Actualiza el producto en la base de datos
     @PostMapping("/update")
-    public Map<String, Object> update(@Valid @RequestBody Producto producto, BindingResult bindingResult){
+    public Map<String, Object> update(@Valid @RequestBody Producto producto, BindingResult bindingResult) {
         Map<String, Object> json = new HashMap<>();
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             Map<String, Object> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> {
                 errors.put(error.getField(), error.getDefaultMessage());
                 json.put("errors", errors);
                 json.put("producto", producto);
             });
-        }else{
+        } else {
             productoService.update(producto.getId(), producto);
             json.put("code", "200");
             json.put("status", "Producto actualizado correctamente");
+        }
+        return json;
+    }
+
+    //Upload de Archivos
+    @PostMapping("/upload-archivos")
+    public Map<String, Object> upload_archivos(@RequestParam("archivo") MultipartFile archivo) {
+        Map<String, Object> json = new HashMap<>();
+        if (archivo.isEmpty()) {
+            json.put("code", "500");
+            json.put("status", "El archivo esta vacio");
+        }
+
+        try {
+            //Fijamos la carpeta destino (creamos en caso de no existir)
+            String carpetaDestino = Paths.get("statics/uploads").toAbsolutePath().toString();
+            File directorio = new File(carpetaDestino);
+            if (!directorio.exists()) {
+                directorio.mkdirs();
+            }
+
+            //Guardamos el archivo
+            String rutaArchivo = carpetaDestino + "/" + archivo.getOriginalFilename();
+            archivo.transferTo(new File(rutaArchivo));
+            json.put("code", "200");
+            json.put("status", "Archivo guardado correctamente");
+        } catch (Exception e) {
+            json.put("code", "500");
+            json.put("status", "Error al guardar el archivo: " + e.getMessage());
         }
         return json;
     }
