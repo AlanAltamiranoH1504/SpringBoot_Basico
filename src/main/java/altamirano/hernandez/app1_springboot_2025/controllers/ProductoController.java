@@ -184,6 +184,14 @@ public class ProductoController {
             json.put("status", "El archivo esta vacio");
         }
 
+        //Validamos el tipo de Archivo
+        String tipoArchivo = archivo.getContentType();
+        if(tipoArchivo == null ||  !tipoArchivo.equals("image/jpeg") && !tipoArchivo.equals("image/png")){
+            json.put("code", "500");
+            json.put("status", "Formato de archivo incorrecto");
+            return json;
+        }
+
         try {
             //Fijamos la carpeta destino (creamos en caso de no existir)
             String carpetaDestino = Paths.get("statics/uploads").toAbsolutePath().toString();

@@ -319,8 +319,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }).then((response) => {
             return response.json();
         }).then((data) => {
-            console.log(data)
-            alert("Archivo cargado correctamente");
+            const {status} = data;
+            alert(status);
         }).catch((e) => {
             console.log("Errror en la peticion");
             console.log(e.message);
