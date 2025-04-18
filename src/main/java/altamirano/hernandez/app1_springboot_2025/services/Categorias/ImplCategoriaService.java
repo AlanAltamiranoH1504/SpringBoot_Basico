@@ -1,4 +1,4 @@
-package altamirano.hernandez.app1_springboot_2025.services;
+package altamirano.hernandez.app1_springboot_2025.services.Categorias;
 
 import altamirano.hernandez.app1_springboot_2025.models.Categoria;
 import altamirano.hernandez.app1_springboot_2025.repositories.ICategoriaRepository;

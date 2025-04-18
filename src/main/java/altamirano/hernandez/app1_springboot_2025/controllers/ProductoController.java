@@ -1,11 +1,10 @@
 package altamirano.hernandez.app1_springboot_2025.controllers;
 
 import altamirano.hernandez.app1_springboot_2025.models.Producto;
-import altamirano.hernandez.app1_springboot_2025.services.InterfaceProductoService;
+import altamirano.hernandez.app1_springboot_2025.services.Productos.InterfaceProductoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

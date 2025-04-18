@@ -1,9 +1,8 @@
 package altamirano.hernandez.app1_springboot_2025.controllers;
 
 import altamirano.hernandez.app1_springboot_2025.models.Categoria;
-import altamirano.hernandez.app1_springboot_2025.services.ImplCategoriaService;
+import altamirano.hernandez.app1_springboot_2025.services.Categorias.ImplCategoriaService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

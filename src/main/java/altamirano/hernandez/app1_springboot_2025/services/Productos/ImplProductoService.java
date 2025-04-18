@@ -1,11 +1,10 @@
-package altamirano.hernandez.app1_springboot_2025.services;
+package altamirano.hernandez.app1_springboot_2025.services.Productos;
 
 import altamirano.hernandez.app1_springboot_2025.models.Producto;
 import altamirano.hernandez.app1_springboot_2025.repositories.InterfaceproductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
