@@ -37,11 +37,12 @@ public class EmailController {
             bindingResult.getFieldErrors().forEach(error -> {
                 errors.put(error.getField(), error.getDefaultMessage());
                 json.put("errores", errors);
+                json.put("message", "Bad request");
             });
             return ResponseEntity.status(400).body(json);
         } else {
             emailService.sendSimpleMail(email.getTo(), email.getSubject(), email.getText());
-            json.put("message", "Envio de emails correcto. Revisar MailTrap");
+            json.put("message", "Success");
         }
         return ResponseEntity.status(200).body(json);
     }
