@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -186,7 +187,7 @@ public class ProductoController {
 
         //Validamos el tipo de Archivo
         String tipoArchivo = archivo.getContentType();
-        if(tipoArchivo == null ||  !tipoArchivo.equals("image/jpeg") && !tipoArchivo.equals("image/png")){
+        if (tipoArchivo == null || !tipoArchivo.equals("image/jpeg") && !tipoArchivo.equals("image/png")) {
             json.put("code", "500");
             json.put("status", "Formato de archivo incorrecto");
             return json;
@@ -210,5 +211,13 @@ public class ProductoController {
             json.put("status", "Error al guardar el archivo: " + e.getMessage());
         }
         return json;
+    }
+
+    @GetMapping("/prueba-reponseEntity")
+    public ResponseEntity<?> prueba_responseEntity() {
+        Map<String, Object>json = new HashMap<>();
+        json.put("mensaje", "prueba correcta");
+
+        return ResponseEntity.status(200).body(json);
     }
 }
