@@ -1,7 +1,7 @@
 package altamirano.hernandez.app1_springboot_2025.controllers;
 
 import altamirano.hernandez.app1_springboot_2025.models.Email;
-import altamirano.hernandez.app1_springboot_2025.services.EmailService;
+import altamirano.hernandez.app1_springboot_2025.services.Emails.EmailService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,9 +1,8 @@
 package altamirano.hernandez.app1_springboot_2025.controllers;
 
 import altamirano.hernandez.app1_springboot_2025.models.Qr;
-import altamirano.hernandez.app1_springboot_2025.services.QrService;
+import altamirano.hernandez.app1_springboot_2025.services.QRs.QrService;
 import jakarta.validation.Valid;
-import org.hibernate.engine.jdbc.mutation.spi.BindingGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
