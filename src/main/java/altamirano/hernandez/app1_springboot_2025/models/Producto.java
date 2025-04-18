@@ -17,11 +17,21 @@ public class Producto {
     @NotBlank(message = "El nombre del producto no puede estar vacio")
     @Size(min = 5, max = 90, message = "El nombre del producto debe ser mayor a 5 y menor o igual a 90 caracteres")
     private String nombre;
+    @NotBlank(message = "El slug del producto no puede estar vacio")
+    @Size(min = 3, max = 90, message = "El slug del producto debe ser de un tamaño entre 3 y 90 caracteres")
+    private String slug;
     @NotBlank(message = "La descripcion del producto no puede estar vacia")
     @Size(min = 5, max = 90, message = "La descripcion del producto debe ser mayor a 5 y menor o igual a 90 caracteres")
     private String descripcion;
     @Positive(message = "El precio debe ser mayor a $0.00")
     private String precio;
+
+    private String foto;
+
+    //Asociacion con Categoria (Un producto tiene un Categoria)
+    @OneToOne
+    @JoinColumn(name = "categoria_id")
+    Categoria categoria;
 
     public Producto(){
 
@@ -31,10 +41,12 @@ public class Producto {
         this.id = id;
     }
 
-    public Producto(String nombre, String descripcion, String precio) {
+    public Producto(String nombre, String slug, String descripcion, String precio, String foto) {
         this.nombre = nombre;
+        this.slug = slug;
         this.descripcion = descripcion;
         this.precio = precio;
+        this.foto = foto;
     }
 
     //Metodos Get y Set
@@ -62,17 +74,39 @@ public class Producto {
     public void setPrecio(String precio) {
         this.precio = precio;
     }
+    public Categoria getCategoria() {
+        return categoria;
+    }
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+    public String getFoto() {
+        return foto;
+    }
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+    public @NotBlank(message = "El slug del producto no puede estar vacio") @Size(min = 3, max = 90, message = "El slug del producto debe ser de un tamaño entre 3 y 90 caracteres") String getSlug() {
+        return slug;
+    }
+    public void setSlug(@NotBlank(message = "El slug del producto no puede estar vacio") @Size(min = 3, max = 90, message = "El slug del producto debe ser de un tamaño entre 3 y 90 caracteres") String slug) {
+        this.slug = slug;
+    }
 
     //Metodo toString
     @Override
     public String toString() {
         return "Producto{" +
-                "descripcion='" + descripcion + '\'' +
+                "categoria=" + categoria +
                 ", id=" + id +
                 ", nombre='" + nombre + '\'' +
+                ", slug='" + slug + '\'' +
+                ", descripcion='" + descripcion + '\'' +
                 ", precio='" + precio + '\'' +
+                ", foto='" + foto + '\'' +
                 '}';
     }
+
 
     //Metodo Equals y Hashcode
     @Override
@@ -80,10 +114,11 @@ public class Producto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Producto producto = (Producto) o;
-        return id == producto.id && Objects.equals(nombre, producto.nombre) && Objects.equals(descripcion, producto.descripcion) && Objects.equals(precio, producto.precio);
+        return id == producto.id && Objects.equals(nombre, producto.nombre) && Objects.equals(slug, producto.slug) && Objects.equals(descripcion, producto.descripcion) && Objects.equals(precio, producto.precio) && Objects.equals(foto, producto.foto) && Objects.equals(categoria, producto.categoria);
     }
+
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, descripcion, precio);
+        return Objects.hash(id, nombre, slug, descripcion, precio, foto, categoria);
     }
 }
