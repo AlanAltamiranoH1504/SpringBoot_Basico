@@ -25,7 +25,7 @@
 <!-- Botones y tabla -->
 <div class="container-xl mt-4">
     <div class="row justify-content-center">
-        <div class="col-md-9">
+        <div class="col-md-11">
 
             <!-- Botones -->
             <div class="d-flex flex-column flex-md-row gap-3">
@@ -48,8 +48,11 @@
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
+                    <th>Slug</th>
                     <th>Descripción</th>
                     <th>Precio</th>
+                    <th>Foto</th>
+                    <th>Categoria</th>
                     <th>Opciones</th>
                 </tr>
                 </thead>
@@ -89,10 +92,14 @@
             </div>
             <div class="modal-body">
                 <div class="w-100 mt-2" id="alertas"></div>
-                <form class="d-flex flex-column gap-3">
+                <form class="d-flex flex-column gap-3" enctype="multipart/form-data">
                     <div>
                         <label for="nombre" class="form-label fw-semibold">Nombre</label>
                         <input type="text" class="form-control" id="nombre" placeholder="Nombre del producto">
+                    </div>
+                    <div>
+                        <label for="slug" class="form-label fw-semibold">Slug</label>
+                        <input type="text" class="form-control" id="slug" name="slug" placeholder="Slug del producto">
                     </div>
                     <div>
                         <label for="descripcion" class="form-label fw-semibold">Descripción</label>
@@ -101,6 +108,17 @@
                     <div>
                         <label for="precio" class="form-label fw-semibold">Precio</label>
                         <input type="text" class="form-control" id="precio" placeholder="Precio del producto">
+                    </div>
+                    <div>
+                        <label for="foto" class="form-label fw-semibold">Foto</label>
+                        <input type="file" class="form-control" id="foto" placeholder="Foto del producto">
+                    </div>
+                    <div>
+                        <label for="categorias" class="form-label fw-semibold">Categoria</label>
+                        <select id="categorias" name="categorias" class="form-control">
+                            <option value="">--- Selecciona una Categoria ---   </option>
+                            <option value="1">Tecnologia</option>
+                        </select>
                     </div>
                 </form>
             </div>

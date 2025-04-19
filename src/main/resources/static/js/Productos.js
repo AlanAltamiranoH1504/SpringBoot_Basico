@@ -17,12 +17,26 @@ document.addEventListener("DOMContentLoaded", () => {
         const inputNombre = document.querySelector("#nombre").value;
         const inputDescripcion = document.querySelector("#descripcion").value;
         const inputPrecio = document.querySelector("#precio").value;
+        const inputSlug = document.querySelector("#slug").value;
+        const inputCategoria = document.querySelector("#categorias").value;
 
         //Validacion
         if (inputNombre.trim() === "" || inputNombre == null) {
             const mensajeAlerta = document.createElement("p");
             mensajeAlerta.classList.add("text-center", "text-uppercase", "px-3", "py-2", "text-white");
             mensajeAlerta.textContent = "Nombre del producto vacio";
+
+            seccionAlertas.classList.add("bg-danger", "fw-bold", "rounded");
+            seccionAlertas.appendChild(mensajeAlerta);
+            setTimeout(() => {
+                seccionAlertas.innerHTML = "";
+            }, 3000);
+            return;
+        }
+        if (inputSlug.trim() === "" || inputSlug == null) {
+            const mensajeAlerta = document.createElement("p");
+            mensajeAlerta.classList.add("text-center", "text-uppercase", "px-3", "py-2", "text-white");
+            mensajeAlerta.textContent = "Slug del producto vacio";
 
             seccionAlertas.classList.add("bg-danger", "fw-bold", "rounded");
             seccionAlertas.appendChild(mensajeAlerta);
@@ -55,10 +69,24 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 3000);
             return;
         }
+        if (inputCategoria.trim() === "" || inputCategoria == null) {
+            const mensajeAlerta = document.createElement("p");
+            mensajeAlerta.classList.add("text-center", "text-uppercase", "px-3", "py-2", "text-white");
+            mensajeAlerta.textContent = "Categoria del producto vacio";
+
+            seccionAlertas.classList.add("bg-danger", "fw-bold", "rounded");
+            seccionAlertas.appendChild(mensajeAlerta);
+            setTimeout(() => {
+                seccionAlertas.innerHTML = "";
+            }, 3000);
+            return;
+        }
         objetoProducto = {
             nombre: inputNombre,
+            slug: inputSlug,
             descripcion: inputDescripcion,
-            precio: inputPrecio
+            precio: inputPrecio,
+            categoriaId: inputCategoria
         };
         saveProductoDB(objetoProducto);
     }
@@ -149,6 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector("#nombre").value = "";
         document.querySelector("#descripcion").value = "";
         document.querySelector("#precio").value = "";
+        document.querySelector("#slug").value = "";
+        document.querySelector("#categorias").value = "";
     }
 
     function listBackeEnd() {
@@ -170,12 +200,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function listarProductosRenderizado(productos) {
         productos.forEach((producto) => {
+            const tdFoto = producto.foto !== null ? producto.foto : "----";
             const tr_producto = document.createElement("tr");
             tr_producto.innerHTML = `
                 <td>${producto.id}</td>
                 <td>${producto.nombre}</td>
+                <td>${producto.slug}</td>
                 <td>${producto.descripcion}</td>
                 <td>$ ${producto.precio}</td>
+                <td>${tdFoto}</td>
+                <td>${producto.categoria.nombre}</td>
                 <td>
                     <div class="d-flex justify-content-center align-items-center gap-1">
                         <button type="button" id="editar" data-id-editar="${producto.id}" class="btn btn-warning d-flex justify-content-center align-items-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>

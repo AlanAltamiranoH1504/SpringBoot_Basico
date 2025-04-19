@@ -1,6 +1,9 @@
 package altamirano.hernandez.app1_springboot_2025.controllers;
 
+import altamirano.hernandez.app1_springboot_2025.models.Categoria;
+import altamirano.hernandez.app1_springboot_2025.models.DTO.ProductoDTO;
 import altamirano.hernandez.app1_springboot_2025.models.Producto;
+import altamirano.hernandez.app1_springboot_2025.services.Categorias.ICategoriaService;
 import altamirano.hernandez.app1_springboot_2025.services.Productos.InterfaceProductoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,8 @@ import java.util.Map;
 public class ProductoController {
     @Autowired
     private InterfaceProductoService productoService;
+    @Autowired
+    private ICategoriaService categoriaService;
 
     //Variables globales de ambiente
     @Value("${datos.nombre}")
@@ -109,9 +114,8 @@ public class ProductoController {
 
     //Save producto en la base de datos
     @PostMapping("/save")
-    public Map<String, Object> save(@Valid @RequestBody Producto producto, BindingResult bindingResult) {
+    public Map<String, Object> save(@Valid @RequestBody ProductoDTO productoDTO, BindingResult bindingResult) {
         Map<String, Object> json = new HashMap<>();
-        //Validacion de errores
         if (bindingResult.hasErrors()) {
             Map<String, Object> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> {
@@ -119,7 +123,14 @@ public class ProductoController {
             });
             json.put("errors", errors);
         } else {
-            productoService.save(producto);
+            Categoria categoriaDB = categoriaService.findById(productoDTO.getCategoriaId());
+            if (categoriaDB == null){
+                json.put("code", "400");
+                json.put("message", "Categoria de productos no encontrada");
+            }
+            Producto productoGuardar = new Producto(productoDTO.getNombre(), productoDTO.getSlug(), productoDTO.getDescripcion(), productoDTO.getPrecio(), productoDTO.getFoto());
+            productoGuardar.setCategoria(categoriaDB);
+            productoService.save(productoGuardar);
             json.put("code", "200");
             json.put("message", "Producto agregado correctamente");
         }
