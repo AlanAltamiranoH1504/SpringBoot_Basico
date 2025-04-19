@@ -29,6 +29,15 @@ public class CategoriaController {
         return ResponseEntity.status(200).body(json);
     }
 
+    //Listado de Categorias
+    @GetMapping("/findAll")
+    ResponseEntity<?> findAll(){
+        Map<String, Object> json = new HashMap<>();
+        json.put("categorias", implCategoriaService.findAll());
+
+        return ResponseEntity.status(200).body(json);
+    }
+
     //Creacion de Categorias
     @PostMapping("/save")
     ResponseEntity<?> saveCategoria(@Valid @RequestBody Categoria categoria, BindingResult bindingResult){

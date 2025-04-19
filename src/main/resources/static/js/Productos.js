@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    peticionSelectCategorias();
     listBackeEnd();
 
     const btnFormulario = document.querySelector("#sendForm");
@@ -7,8 +8,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const tbody_productos = document.querySelector("#tbody-productos");
     const seccionAlertasUpdate = document.querySelector("#errores_actualizacion");
     const formArchivos = document.querySelector("#form_archivos");
+
+    //Eventos
     btnFormulario.addEventListener("click", formularioEnviado);
     formArchivos.addEventListener("submit", formularioArchivosEnviado);
+
+    //Funciones
+    function peticionSelectCategorias(){
+        fetch("/categorias/findAll", {
+            method: "GET"
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            llenadoSelectCategorias(data);
+        }).catch((e) => {
+            console.log("Error en peticion para listado de categorias");
+            console.log(e.message);
+        })
+    }
+
+    function llenadoSelectCategorias(categoriasObject){
+        const {categorias} = categoriasObject;
+        const selectCategorias = document.querySelector("#categorias");
+        categorias.forEach((categoria) => {
+            const optionCategoria = document.createElement("option");
+            optionCategoria.value = categoria.id;
+            optionCategoria.text = categoria.nombre;
+            selectCategorias.appendChild(optionCategoria);
+        });
+    }
 
     function formularioEnviado(e) {
         e.preventDefault();
