@@ -33,8 +33,12 @@ public class CategoriaController {
     @GetMapping("/findAll")
     ResponseEntity<?> findAll(){
         Map<String, Object> json = new HashMap<>();
-        json.put("categorias", implCategoriaService.findAll());
-
+        try {
+            json.put("categorias", implCategoriaService.findAll());
+        } catch (Exception e) {
+            json.put("Error", e.getMessage());
+            json.put("stackTrace", e.getStackTrace());
+        }
         return ResponseEntity.status(200).body(json);
     }
 

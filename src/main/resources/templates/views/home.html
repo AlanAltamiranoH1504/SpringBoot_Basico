@@ -26,7 +26,6 @@
 <div class="container-xl mt-4">
     <div class="row justify-content-center">
         <div class="col-md-11">
-
             <!-- Botones -->
             <div class="d-flex flex-column flex-md-row gap-3">
                 <button type="button" data-bs-toggle="modal" data-bs-target="#nuevoProducto"
@@ -36,6 +35,10 @@
                 <button type="button" data-bs-toggle="modal" data-bs-target="#nuevoEmail"
                         class="btn btn-secondary w-100">
                     <i class="bi bi-envelope me-2"></i> Enviar Email
+                </button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#nuevaCategoria"
+                        class="btn btn-secondary w-100">
+                    <i class="bi bi-plus-circle me-2"></i>Agregar Categoria
                 </button>
             </div>
 
@@ -57,7 +60,22 @@
                 </tr>
                 </thead>
                 <tbody id="tbody-productos">
-                <!-- contenido dinámico -->
+                </tbody>
+            </table>
+        </div>
+
+        <!--Tabla de categorias-->
+        <div class="col-md-6">
+            <table class="table table-hover shadow-sm mt-4 rounded overflow-hidden text-center align-middle">
+                <thead class="table-dark text-uppercase">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Categoria</th>
+                    <th>Opciones</th>
+                </tr>
+                </thead>
+                <tbody id="tbody-categorias">
+
                 </tbody>
             </table>
         </div>
@@ -203,6 +221,32 @@
     </div>
 </div>
 
+<!-- Modal Agregar Categoria -->
+<div class="modal fade" id="nuevaCategoria" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header">
+                <h3 class="modal-title fw-bold text-uppercase">Agregar Categoria</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <div class="modal-body">
+                <form action="#" method="#" class="gap-4">
+                    <div>
+                        <label for="nombreCategoria" class="form-label fw-semibold">Nombre de Categoria</label>
+                        <input type="text" name="nombreCategoria" id="nombreCategoria" class="form-control"
+                               placeholder="Nombre de categoria" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-primary" id="newCategoria">Agregar Categoria</button>
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Footer -->
 <footer class="mt-5">
     <div th:replace="layouts/footer:: footer"></div>
@@ -210,5 +254,6 @@
 
 <script src="/js/Emails.js"></script>
 <script src="/js/Productos.js"></script>
+<script src="/js/Categorias.js"></script>
 </body>
 </html>
