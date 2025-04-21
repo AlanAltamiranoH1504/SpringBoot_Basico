@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     peticionListarCategorias();
 
+    //Selectores
     const btnNewCategoria = document.querySelector("#newCategoria");
+    const tbodyCategorias = document.querySelector("#tbody-categorias");
 
     //Eventos del DOM
     btnNewCategoria.addEventListener("click", sendFormNuevaCategoria);
@@ -22,12 +24,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function listadoCategorias(data) {
         const {categorias} = data;
-        const tbodyCategorias = document.querySelector("#tbody-categorias");
+        tbodyCategorias.innerHTML = "";
         categorias.forEach((categoria) => {
             const trCategoria = document.createElement("tr");
             trCategoria.innerHTML = `
                 <td>${categoria.id}</td>
                 <td>${categoria.nombre}</td>
+                <td>${categoria.slug}</td>
                 <td class="d-flex justify-content-around">
                     <button type="button" id="btnEditar-${categoria.id}" data-id="${categoria.id}" class="btn btn-warning d-flex justify-content-center align-items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
@@ -43,6 +46,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function sendFormNuevaCategoria(e) {
         e.preventDefault();
-        console.log("Haciendo click en el boton de nueva categria");
+        const inputNombreCategoria = document.querySelector("#nombreCategoria").value;
+        const inputSlugCategoria = document.querySelector("#slugCategoria").value;
+        const nuevaCategoria = {
+            nombre: inputNombreCategoria,
+            slug: inputSlugCategoria
+        }
+
+        //Validacion
+        if (inputNombreCategoria.trim() === "" && inputSlugCategoria.trim() === ""){
+            alertasFormCategoria("error", "Los campos son obligatorios para una categoria");
+            return;
+        }
+        if (inputNombreCategoria.trim() === "" || inputNombreCategoria == null){
+            alertasFormCategoria("error", "El nombre de la categoria no debe ir vacio");
+            return;
+        }
+        if (inputSlugCategoria.trim() === "" || inputSlugCategoria == null){
+            alertasFormCategoria("error", "El slug de la categoria no debe ir vacio");
+            return;
+        }
+
+        fetch("/categorias/save", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(nuevaCategoria)
+        }).then((respose) => {
+            return respose.json();
+        }).then((data) => {
+            limpiarInputs();
+            alertasFormCategoria("success", "Categoria Agregada Correctamente");
+            peticionListarCategorias();
+        }).catch((error) => {
+            console.log("Error en guardado de nueva categoria");
+            console.log(error.message);
+        })
+    }
+
+    function alertasFormCategoria(tipo, mensaje) {
+        const alertarFormCategorias = document.querySelector("#alertarFormCategorias");
+        if (tipo === "success") {
+            alertarFormCategorias.classList.add("bg-success");
+            alertarFormCategorias.textContent = mensaje;
+
+            setTimeout(() => {
+                alertarFormCategorias.classList.remove("bg-success");
+                alertarFormCategorias.textContent = "";
+            },3500)
+        }else{
+            alertarFormCategorias.classList.add("bg-warning");
+            alertarFormCategorias.textContent = mensaje;
+
+            setTimeout(() => {
+                alertarFormCategorias.classList.remove("bg-warning");
+                alertarFormCategorias.textContent = "";
+            },3500);
+        }
+    }
+
+    function limpiarInputs() {
+        document.querySelector("#nombreCategoria").value = "";
+        document.querySelector("#slugCategoria").value = "";
     }
 })
