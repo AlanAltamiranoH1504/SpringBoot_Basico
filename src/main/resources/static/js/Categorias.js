@@ -32,16 +32,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${categoria.nombre}</td>
                 <td>${categoria.slug}</td>
                 <td class="d-flex justify-content-around">
-                    <button type="button" id="btnEditar-${categoria.id}" data-id="${categoria.id}" class="btn btn-warning d-flex justify-content-center align-items-center">
+                    <button type="button" id="btnEditar" data-id="${categoria.id}" class="btn btn-warning d-flex justify-content-center align-items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                     </button>
-                    <button type="button" id="btnEliminar-${categoria.id}" data-id="${categoria.id}" class="btn btn-danger d-flex justify-content-center align-items-center">
+                    <button type="button" id="btnEliminar" data-id="${categoria.id}" class="btn btn-danger d-flex justify-content-center align-items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
                     </button>
                 </td>
             `;
             tbodyCategorias.appendChild(trCategoria);
-        })
+        });
+        document.querySelector("#tbody-categorias").addEventListener("click", (e) => {
+            btnSeleccionado(e.target)
+        });
     }
 
     function sendFormNuevaCategoria(e) {
@@ -85,6 +88,42 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
 
+    function btnSeleccionado(btnSeleccionado) {
+        const tipoBtn = btnSeleccionado.getAttribute("id");
+        if (tipoBtn === "btnEliminar"){
+            const id = btnSeleccionado.getAttribute("data-id")
+            preEliminacion(id);
+        }else if(tipoBtn === "btnEditar") {
+            const id = btnSeleccionado.getAttribute("data-id");
+            preEdicion(id);
+        }
+    }
+
+    function preEliminacion(id) {
+        const bodyCategoria = {
+            id: id
+        }
+        fetch("/categorias/delete", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(bodyCategoria)
+        }).then((respose) => {
+            return respose.json();
+        }).then((data) => {
+            alertasEliminacion("success", "Categoria eliminada");
+            peticionListarCategorias();
+        }).catch((error) => {
+            console.log("Error en peticion para eliminacion");
+            console.log(error.message);
+        })
+    }
+
+    function preEdicion(id){
+        console.log("Se hizo click en boton de edicion con id " + id);
+    }
+
     function alertasFormCategoria(tipo, mensaje) {
         const alertarFormCategorias = document.querySelector("#alertarFormCategorias");
         if (tipo === "success") {
@@ -106,6 +145,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function alertasEliminacion(tipo, mensaje) {
+        const alertas = document.querySelector("#alertas_fuera-categorias");
+        if (tipo === "success") {
+            alertas.classList.add("bg-success");
+            alertas.textContent = mensaje;
+
+            setTimeout(() => {
+                alertas.classList.remove("bg-success");
+                alertas.textContent = "";
+            },3500)
+        }else{
+            alertas.classList.add("bg-warning");
+            alertas.textContent = mensaje;
+
+            setTimeout(() => {
+                alertas.classList.remove("bg-warning");
+                alertas.textContent = "";
+            },3500);
+        }
+    }
     function limpiarInputs() {
         document.querySelector("#nombreCategoria").value = "";
         document.querySelector("#slugCategoria").value = "";

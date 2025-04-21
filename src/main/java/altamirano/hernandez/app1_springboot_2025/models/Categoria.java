@@ -24,6 +24,9 @@ public class Categoria {
     public Categoria(){
 
     }
+    public Categoria(int id) {
+        this.id = id;
+    }
     public Categoria(int id, String  nombre, String slug){
         this.id = id;
         this.nombre =  nombre;

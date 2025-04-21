@@ -58,4 +58,16 @@ public class CategoriaController {
         }
         return ResponseEntity.status(200).body(json);
     }
+
+    @PostMapping("/delete")
+    ResponseEntity<?> deleteCategoria( @RequestBody Categoria categoria){
+        Map<String, Object> json = new HashMap<>();
+        try {
+            implCategoriaService.deleteById(categoria.getId());
+            json.put("msg", "Categoria eliminada con exito");
+        } catch (Exception e) {
+            json.put("Error", e.getMessage());
+        }
+        return ResponseEntity.status(200).body(json);
+    }
 }
