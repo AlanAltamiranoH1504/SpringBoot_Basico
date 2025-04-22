@@ -54,7 +54,7 @@ public class ImplProductoService implements InterfaceProductoService {
 
     @Override
     public List<Producto> productosListados(String nombre) {
-        List<Producto> productoList = productoRepository.productosFiltrados(nombre);
+        List<Producto> productoList = productoRepository.productosFiltrados("%" + nombre + "%");
         return productoList;
     }
 

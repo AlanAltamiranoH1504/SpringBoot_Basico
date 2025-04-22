@@ -2,16 +2,21 @@ document.addEventListener("DOMContentLoaded", () => {
     peticionSelectCategorias();
     listBackeEnd();
 
+    //Selectores
     const btnFormulario = document.querySelector("#sendForm");
     const seccionAlertas = document.querySelector("#alertas");
     const seccionAlertasFuera = document.querySelector("#alertas_fuera");
     const tbody_productos = document.querySelector("#tbody-productos");
     const seccionAlertasUpdate = document.querySelector("#errores_actualizacion");
     const formArchivos = document.querySelector("#form_archivos");
+    const formFiltro = document.querySelector("#formFiltro");
+    const btnBorrarFiltro = document.querySelector("#borrarFiltro");
 
     //Eventos
     btnFormulario.addEventListener("click", formularioEnviado);
     formArchivos.addEventListener("submit", formularioArchivosEnviado);
+    formFiltro.addEventListener("submit", peticionFiltrado);
+    btnBorrarFiltro.addEventListener("click", listBackeEnd);
 
     //Funciones
     function peticionSelectCategorias(){
@@ -210,6 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function listBackeEnd() {
+        document.querySelector("#nombreFiltro").value = "";
         fetch("/productos/list", {
             method: "GET",
             headers: {
@@ -227,10 +233,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function listarProductosRenderizado(productos) {
-        productos.forEach((producto) => {
-            const tdFoto = producto.foto !== null ? producto.foto : "----";
-            const tr_producto = document.createElement("tr");
-            tr_producto.innerHTML = `
+        tbody_productos.innerHTML = "";
+
+        if (productos.length >= 1){
+            productos.forEach((producto) => {
+                const tdFoto = producto.foto !== null ? producto.foto : "----";
+                const tr_producto = document.createElement("tr");
+                tr_producto.innerHTML = `
                 <td>${producto.id}</td>
                 <td>${producto.nombre}</td>
                 <td>${producto.slug}</td>
@@ -245,8 +254,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </td>
             `;
-            tbody_productos.appendChild(tr_producto);
-        });
+                tbody_productos.appendChild(tr_producto);
+            });
+        }else{
+            // document.querySelector("#alertarCantidadProductos").removeAttribute("")
+        }
     }
     document.querySelector("#tbody-productos").addEventListener("click", (e) => {
         seleccionBtn(e.target);
@@ -387,5 +399,30 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Errror en la peticion");
             console.log(e.message);
         })
+    }
+
+    function peticionFiltrado(e) {
+        e.preventDefault();
+        const inputNombreFiltro = document.querySelector("#nombreFiltro").value;
+        const bodyFiltrado = {
+            nombre: inputNombreFiltro
+        };
+
+        fetch("/productos/filtro", {
+            method: "POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify(bodyFiltrado)
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            // console.log(data)
+            const {productos} = data;
+            listarProductosRenderizado(productos)
+        }).catch((error) => {
+            console.log("Error en peticion a backend");
+            console.log(error.message);
+        });
     }
 });
