@@ -1,6 +1,7 @@
 package altamirano.hernandez.app1_springboot_2025.controllers;
 
 import altamirano.hernandez.app1_springboot_2025.models.Categoria;
+import altamirano.hernandez.app1_springboot_2025.models.DTO.CategoriaDTO;
 import altamirano.hernandez.app1_springboot_2025.models.DTO.ProductoDTO;
 import altamirano.hernandez.app1_springboot_2025.models.Producto;
 import altamirano.hernandez.app1_springboot_2025.services.Categorias.ICategoriaService;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -221,6 +223,22 @@ public class ProductoController {
             json.put("status", "Error al guardar el archivo: " + e.getMessage());
         }
         return json;
+    }
+
+    @PostMapping("/filtro")
+    ResponseEntity<?> filtroProductosPorCategoria(@Valid @RequestBody CategoriaDTO categoriaDTO, BindingResult bindingResult){
+        Map<String, Object> json = new HashMap<>();
+        if (bindingResult.hasErrors()){
+            Map<String, Object> errores = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> {
+                errores.put(error.getField(), error.getDefaultMessage());
+            });
+            return ResponseEntity.badRequest().body(errores);
+        } else{
+            List<Producto> productosFiltrados = productoService.productosListados(categoriaDTO.getNombre());
+            json.put("productos", productosFiltrados);
+        }
+        return ResponseEntity.status(200).body(json);
     }
 
     @GetMapping("/prueba-reponseEntity")

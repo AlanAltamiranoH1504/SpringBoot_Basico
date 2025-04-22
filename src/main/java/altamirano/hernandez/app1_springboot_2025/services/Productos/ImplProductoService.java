@@ -3,6 +3,7 @@ package altamirano.hernandez.app1_springboot_2025.services.Productos;
 import altamirano.hernandez.app1_springboot_2025.models.Producto;
 import altamirano.hernandez.app1_springboot_2025.repositories.InterfaceproductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.Optional;
 public class ImplProductoService implements InterfaceProductoService {
     @Autowired
     InterfaceproductoRepository productoRepository;
+    @Autowired
+    private RestTemplateAutoConfiguration restTemplateAutoConfiguration;
 
     @Override
     public List<Producto> findAll() {
@@ -48,4 +51,11 @@ public class ImplProductoService implements InterfaceProductoService {
     public void deleteById(int id) {
         productoRepository.deleteById(id);
     }
+
+    @Override
+    public List<Producto> productosListados(String nombre) {
+        List<Producto> productoList = productoRepository.productosFiltrados(nombre);
+        return productoList;
+    }
+
 }
