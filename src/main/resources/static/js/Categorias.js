@@ -4,9 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
     //Selectores
     const btnNewCategoria = document.querySelector("#newCategoria");
     const tbodyCategorias = document.querySelector("#tbody-categorias");
+    const formEdicionCategoria = document.querySelector("#formEdicionCategoria");
 
     //Eventos del DOM
     btnNewCategoria.addEventListener("click", sendFormNuevaCategoria);
+    formEdicionCategoria.addEventListener("submit", sendActualizacionCategoria);
 
     //Funciones
     function peticionListarCategorias() {
@@ -58,15 +60,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         //Validacion
         if (inputNombreCategoria.trim() === "" && inputSlugCategoria.trim() === ""){
-            alertasFormCategoria("error", "Los campos son obligatorios para una categoria");
+            alertasFormCategoria("creacion","error", "Los campos son obligatorios para una categoria");
             return;
         }
         if (inputNombreCategoria.trim() === "" || inputNombreCategoria == null){
-            alertasFormCategoria("error", "El nombre de la categoria no debe ir vacio");
+            alertasFormCategoria("creacion", "error", "El nombre de la categoria no debe ir vacio");
             return;
         }
         if (inputSlugCategoria.trim() === "" || inputSlugCategoria == null){
-            alertasFormCategoria("error", "El slug de la categoria no debe ir vacio");
+            alertasFormCategoria("creacion", "error", "El slug de la categoria no debe ir vacio");
             return;
         }
 
@@ -80,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return respose.json();
         }).then((data) => {
             limpiarInputs();
-            alertasFormCategoria("success", "Categoria Agregada Correctamente");
+            alertasFormCategoria("creacion","success", "Categoria Agregada Correctamente");
             peticionListarCategorias();
         }).catch((error) => {
             console.log("Error en guardado de nueva categoria");
@@ -95,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
             preEliminacion(id);
         }else if(tipoBtn === "btnEditar") {
             const id = btnSeleccionado.getAttribute("data-id");
-            preEdicion(id);
+            peticionEdicion(id);
         }
     }
 
@@ -120,28 +122,115 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
 
-    function preEdicion(id){
-        console.log("Se hizo click en boton de edicion con id " + id);
+    function peticionEdicion(id){
+        const bodyCategoria = {
+            id
+        }
+        fetch("/categorias/findById", {
+            method: "POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify(bodyCategoria)
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            preEdicion(data)
+        }).catch((error) => {
+            // console.log("Error en peticion para encontrar categoria");
+        });
     }
 
-    function alertasFormCategoria(tipo, mensaje) {
-        const alertarFormCategorias = document.querySelector("#alertarFormCategorias");
-        if (tipo === "success") {
-            alertarFormCategorias.classList.add("bg-success");
-            alertarFormCategorias.textContent = mensaje;
+    function preEdicion(data){
+        const {categoria} = data;
+        const modalEdicionCategoria = new bootstrap.Modal(document.querySelector("#editarCategoria"));
+        modalEdicionCategoria.show();
+        document.querySelector("#idCategoriaEdicion").value = categoria.id;
+        document.querySelector("#nombreCategoriaActualizar").value = categoria.nombre;
+        document.querySelector("#slugCategoriActualizar").value = categoria.slug;
+    }
 
-            setTimeout(() => {
-                alertarFormCategorias.classList.remove("bg-success");
-                alertarFormCategorias.textContent = "";
-            },3500)
-        }else{
-            alertarFormCategorias.classList.add("bg-warning");
-            alertarFormCategorias.textContent = mensaje;
+    function sendActualizacionCategoria(e){
+        e.preventDefault();
+        const inputNombreActualizar = document.querySelector("#nombreCategoriaActualizar").value;
+        const inputSlugActualizar = document.querySelector("#slugCategoriActualizar").value;
+        const inputId = document.querySelector("#idCategoriaEdicion").value;
 
-            setTimeout(() => {
-                alertarFormCategorias.classList.remove("bg-warning");
-                alertarFormCategorias.textContent = "";
-            },3500);
+        if (inputSlugActualizar.trim() === "" && inputNombreActualizar.trim() === ""){
+            alertasFormCategoria("edicion", "error", "Los campos son obligatorios");
+            return;
+        }
+        if (inputNombreActualizar.trim() === "" || inputNombreActualizar == null){
+            alertasFormCategoria("edicion", "error", "El nombre no puede estar vacio");
+            return;
+        }
+        if (inputSlugActualizar.trim() === "" || inputSlugActualizar == null){
+            alertasFormCategoria("edicion", "error", "El slug no puede estar vacio");
+            return;
+        }
+
+        const categoriaBody = {
+            id: inputId,
+            nombre: inputNombreActualizar,
+            slug: inputSlugActualizar
+        }
+        fetch("/categorias/updateCategoria", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(categoriaBody)
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
+            alertasFormCategoria("edicion", "success", "Categoria actualizada de forma correcta");
+            peticionListarCategorias();
+        }).catch((error) => {
+            console.log("Error en peticion al backend");
+            console.log(error.message);
+        })
+    }
+
+    function alertasFormCategoria(formulario, tipo, mensaje) {
+
+        if (formulario === "creacion") {
+            const alertarFormCategorias = document.querySelector("#alertarFormCategorias");
+            if (tipo === "success") {
+                alertarFormCategorias.classList.add("bg-success");
+                alertarFormCategorias.textContent = mensaje;
+
+                setTimeout(() => {
+                    alertarFormCategorias.classList.remove("bg-success");
+                    alertarFormCategorias.textContent = "";
+                },3500)
+            }else{
+                alertarFormCategorias.classList.add("bg-warning");
+                alertarFormCategorias.textContent = mensaje;
+
+                setTimeout(() => {
+                    alertarFormCategorias.classList.remove("bg-warning");
+                    alertarFormCategorias.textContent = "";
+                },3500);
+            }
+        } else if (formulario === "edicion") {
+            const alertarFormCategoriasEdicion = document.querySelector("#alertas_edicion");
+            if (tipo === "success") {
+                alertarFormCategoriasEdicion.classList.add("bg-success");
+                alertarFormCategoriasEdicion.textContent = mensaje;
+
+                setTimeout(() => {
+                    alertarFormCategoriasEdicion.classList.remove("bg-success");
+                    alertarFormCategoriasEdicion.textContent = "";
+                },3500)
+            }else{
+                alertarFormCategoriasEdicion.classList.add("bg-warning");
+                alertarFormCategoriasEdicion.textContent = mensaje;
+
+                setTimeout(() => {
+                    alertarFormCategoriasEdicion.classList.remove("bg-warning");
+                    alertarFormCategoriasEdicion.textContent = "";
+                },3500);
+            }
         }
     }
 

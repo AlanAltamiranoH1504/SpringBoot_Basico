@@ -45,7 +45,7 @@
             <!-- Alertas -->
             <div class="w-100 mt-3" id="alertas_fuera"></div>
 
-            <!-- Tabla -->
+            <!-- Tabla Productos -->
             <table class="table table-hover shadow-sm mt-4 rounded overflow-hidden text-center align-middle">
                 <thead class="table-dark text-uppercase">
                 <tr>
@@ -253,6 +253,39 @@
             <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-primary" id="newCategoria">Agregar Categoria</button>
                 <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal editar categoria-->
+<div class="modal fade" id="editarCategoria" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header">
+                <h3 class="modal-title fw-bold text-uppercase">Editar Categoria</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <div class="modal-body">
+                <div id="alertas_edicion" class="px-3 py-2 text-uppercase fw-bold text-center rounded text-white mb-2"></div>
+                <form method="post" action="#" id="formEdicionCategoria" class="gap-4">
+                    <div>
+                        <input type="hidden" id="idCategoriaEdicion" name="idCategoriaEdicion" value="">
+                    </div>
+                    <div class="mb-4">
+                        <label for="nombreCategoriaActualizar" class="form-label fw-semibold">Nombre de Categoria:</label>
+                        <input class="form-control" type="text" name="nombreCategoriaActualizar" id="nombreCategoriaActualizar" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="slugCategoriActualizar" class="form-label fw-semibold">Slug de Categoria:</label>
+                        <input class="form-control" type="text" name="slugCategoriaActualizar" id="slugCategoriActualizar" required>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <input type="submit" class="btn btn-primary px-3 py-2 fw-semibold" id="sendUpdateCategoria" value="Actualizar Categoria">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
