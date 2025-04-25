@@ -1,7 +1,7 @@
 package altamirano.hernandez.app1_springboot_2025.services.Productos;
 
 import altamirano.hernandez.app1_springboot_2025.models.Producto;
-import altamirano.hernandez.app1_springboot_2025.repositories.InterfaceproductoRepository;
+import altamirano.hernandez.app1_springboot_2025.repositories.IProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class ImplProductoService implements InterfaceProductoService {
     @Autowired
-    InterfaceproductoRepository productoRepository;
+    IProductoRepository productoRepository;
     @Autowired
     private RestTemplateAutoConfiguration restTemplateAutoConfiguration;
 

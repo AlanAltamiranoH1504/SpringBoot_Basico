@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface InterfaceproductoRepository extends CrudRepository<Producto, Integer> {
+public interface IProductoRepository extends CrudRepository<Producto, Integer> {
 
     @Query("SELECT p FROM Producto p WHERE p.categoria.nombre LIKE :nombreCategoria")
     List<Producto> productosFiltrados(@Param("nombreCategoria") String nombreCategoria);
