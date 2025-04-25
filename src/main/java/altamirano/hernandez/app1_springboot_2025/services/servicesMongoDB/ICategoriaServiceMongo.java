@@ -4,7 +4,7 @@ import altamirano.hernandez.app1_springboot_2025.models.mongoDB.Categoria;
 
 import java.util.List;
 
-public interface ICategoriaService {
+public interface ICategoriaServiceMongo {
     public abstract List<Categoria> findAll();
     public abstract Categoria findById(String id);
     public abstract void save(Categoria categoria);

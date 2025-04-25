@@ -4,7 +4,7 @@ import altamirano.hernandez.app1_springboot_2025.models.mongoDB.Producto;
 
 import java.util.List;
 
-public interface IProductoService {
+public interface IProductoServiceMongo {
     public abstract List<Producto> findAll();
     public abstract Producto findById(String id);
     public abstract void save(Producto producto);
