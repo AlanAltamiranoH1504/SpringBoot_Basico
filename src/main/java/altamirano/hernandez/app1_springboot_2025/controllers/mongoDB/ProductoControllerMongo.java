@@ -6,9 +6,8 @@ import altamirano.hernandez.app1_springboot_2025.models.mongoDB.ProductoMongo;
 import altamirano.hernandez.app1_springboot_2025.services.servicesMongoDB.ICategoriaServiceMongo;
 import altamirano.hernandez.app1_springboot_2025.services.servicesMongoDB.IProductoServiceMongo;
 import jakarta.validation.Valid;
-import org.aspectj.lang.annotation.AfterThrowing;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindableRuntimeHintsRegistrar;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,7 @@ public class ProductoControllerMongo {
     IProductoServiceMongo iProductoServiceMongo;
 
     @GetMapping("/listProductosMongo")
-    ResponseEntity<?> listProductos(){
+    ResponseEntity<?> listProductos() {
         Map<String, Object> json = new HashMap<>();
         List<ProductoMongo> productos = new ArrayList<>();
         productos = iProductoServiceMongo.findAll();
@@ -58,8 +57,40 @@ public class ProductoControllerMongo {
         }
     }
 
+    @PutMapping("/updateProductoMongo/{id}")
+    ResponseEntity<?> updateProductoMongo(@PathVariable String id, @Valid @RequestBody ProductoMongo productoMongo, BindingResult bindingResult){
+        Map<String, Object> json = new HashMap<>();
+        if (bindingResult.hasErrors()){
+            Map<String, Object> errores = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> {
+                errores.put(error.getField(), error.getDefaultMessage());
+            });
+            return ResponseEntity.badRequest().body(errores);
+        }else{
+            try {
+                ProductoMongo productoFound = iProductoServiceMongo.findById(id);
+                if (productoFound != null){
+                    CategoriaMongo categoriaProducto = productoFound.getCategoria();
+                    productoFound.setNombre(productoMongo.getNombre());
+                    productoFound.setSlug(productoMongo.getSlug());
+                    productoFound.setDescripcion(productoMongo.getDescripcion());
+                    productoFound.setPrecio(productoMongo.getPrecio());
+                    productoFound.setCategoria(categoriaProducto);
+                    iProductoServiceMongo.save(productoFound);
+                    json.put("message", "Producto actualizado correctamente");
+                    return ResponseEntity.ok().body(json);
+                } else{
+                    return ResponseEntity.status(404).body("Produco no encontrado");
+                }
+            } catch (Exception e){
+                return ResponseEntity.status(500).body(e.getMessage());
+            }
+        }
+
+    }
+
     @DeleteMapping("/deleteProductoMongo")
-    ResponseEntity<?> deleteProductoMongo(@Valid @RequestBody ProductoMongoDTO productoMongoDTO, BindingResult bindingResult){
+    ResponseEntity<?> deleteProductoMongo(@Valid @RequestBody ProductoMongoDTO productoMongoDTO, BindingResult bindingResult) {
         Map<String, Object> json = new HashMap<>();
         if (bindingResult.hasErrors()) {
             Map<String, Object> errores = new HashMap<>();
@@ -67,7 +98,7 @@ public class ProductoControllerMongo {
                 errores.put(error.getField(), error.getDefaultMessage());
             });
             return ResponseEntity.badRequest().body(errores);
-        }else{
+        } else {
             try {
                 iProductoServiceMongo.deleteById(productoMongoDTO.getId());
                 json.put("message", "Producto eliminado correctamente");
