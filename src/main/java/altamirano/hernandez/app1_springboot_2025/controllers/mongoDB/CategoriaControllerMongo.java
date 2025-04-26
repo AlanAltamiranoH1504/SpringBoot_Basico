@@ -21,6 +21,17 @@ public class CategoriaControllerMongo {
     @Autowired
     ICategoriaServiceMongo categoriaServiceMongo;
 
+    @GetMapping("/list")
+    ResponseEntity<?> listarCategorias() {
+        Map<String, Object> json = new HashMap<>();
+        try {
+            json.put("categorias", categoriaServiceMongo.findAll());
+            return ResponseEntity.status(200).body(json);
+        }catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
     @GetMapping("/prueba")
     ResponseEntity<?> prueba(HttpServletResponse response) {
         Map<String, Object> json = new HashMap<>();
