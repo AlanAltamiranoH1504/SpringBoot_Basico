@@ -5,6 +5,7 @@ import altamirano.hernandez.app1_springboot_2025.models.mongoDB.DTO.CategoriaMon
 import altamirano.hernandez.app1_springboot_2025.services.servicesMongoDB.ICategoriaServiceMongo;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.hibernate.engine.jdbc.mutation.spi.BindingGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -55,6 +56,26 @@ public class CategoriaControllerMongo {
                 json.put("message", "Categoria guardada correctamente!");
                 return ResponseEntity.status(201).body(json);
             } catch (Exception e) {
+                return ResponseEntity.status(500).body(e.getMessage());
+            }
+        }
+    }
+
+    @PutMapping("/update")
+    ResponseEntity<?> update(@Valid @RequestBody CategoriaMongo categoriaMongo, BindingResult bindingResult){
+        Map<String, Object> json = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            Map<String, Object> errores = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error ->{
+                errores.put(error.getField(), error.getDefaultMessage());
+            });
+            return ResponseEntity.badRequest().body(errores);
+        }else{
+            try {
+                categoriaServiceMongo.save(categoriaMongo);
+                json.put("message", "Categoria actualizada correctamente");
+                return ResponseEntity.status(201).body(json);
+            } catch (Exception e){
                 return ResponseEntity.status(500).body(e.getMessage());
             }
         }
