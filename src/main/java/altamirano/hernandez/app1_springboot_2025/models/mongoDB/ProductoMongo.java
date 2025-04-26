@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Objects;
 
 @Document(collection = "productos")
-public class Producto {
+public class ProductoMongo {
 
     @Id
     private String id;
@@ -28,21 +28,21 @@ public class Producto {
     private String foto;
 
     //Relacion embebida con Categoria
-    private Categoria categoria;
+    private CategoriaMongo categoriaMongo;
 
     //Constructores
-    public Producto(){}
-    public Producto(String id) {
+    public ProductoMongo(){}
+    public ProductoMongo(String id) {
         this.id = id;
     }
-    public Producto(String nombre, String slug, String descripcion, double precio, String foto){
+    public ProductoMongo(String nombre, String slug, String descripcion, double precio, String foto){
         this.nombre = nombre;
         this.slug = slug;
         this.descripcion = descripcion;
         this.precio = precio;
         this.foto = foto;
     }
-    public Producto(String id, String nombre, String slug, String descripcion, double precio, String foto){
+    public ProductoMongo(String id, String nombre, String slug, String descripcion, double precio, String foto){
         this.id = id;
         this.nombre = nombre;
         this.slug = slug;
@@ -52,11 +52,11 @@ public class Producto {
     }
 
     //Metodos Get y Set
-    public Categoria getCategoria() {
-        return categoria;
+    public CategoriaMongo getCategoria() {
+        return categoriaMongo;
     }
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setCategoria(CategoriaMongo categoriaMongo) {
+        this.categoriaMongo = categoriaMongo;
     }
     public @NotBlank(message = "La descripcion del producto no puede estar vacia") @Size(min = 3, max = 90, message = "El largo de la descripcion del producto debe ser entre 3 y 90 caracteres") String getDescripcion() {
         return descripcion;
@@ -100,7 +100,7 @@ public class Producto {
     @Override
     public String toString() {
         return "Producto{" +
-                "categoria=" + categoria +
+                "categoria=" + categoriaMongo +
                 ", id='" + id + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", slug='" + slug + '\'' +
@@ -115,11 +115,11 @@ public class Producto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Producto producto = (Producto) o;
-        return Double.compare(precio, producto.precio) == 0 && Objects.equals(id, producto.id) && Objects.equals(nombre, producto.nombre) && Objects.equals(slug, producto.slug) && Objects.equals(descripcion, producto.descripcion) && Objects.equals(foto, producto.foto) && Objects.equals(categoria, producto.categoria);
+        ProductoMongo producto = (ProductoMongo) o;
+        return Double.compare(precio, producto.precio) == 0 && Objects.equals(id, producto.id) && Objects.equals(nombre, producto.nombre) && Objects.equals(slug, producto.slug) && Objects.equals(descripcion, producto.descripcion) && Objects.equals(foto, producto.foto) && Objects.equals(categoriaMongo, producto.categoriaMongo);
     }
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, slug, descripcion, precio, foto, categoria);
+        return Objects.hash(id, nombre, slug, descripcion, precio, foto, categoriaMongo);
     }
 }

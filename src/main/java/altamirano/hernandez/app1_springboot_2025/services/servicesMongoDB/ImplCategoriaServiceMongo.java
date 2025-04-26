@@ -1,6 +1,6 @@
 package altamirano.hernandez.app1_springboot_2025.services.servicesMongoDB;
 
-import altamirano.hernandez.app1_springboot_2025.models.mongoDB.Categoria;
+import altamirano.hernandez.app1_springboot_2025.models.mongoDB.CategoriaMongo;
 import altamirano.hernandez.app1_springboot_2025.repositories.repositoriesMongoDB.ICategoriaRepositoryMongo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,16 +16,16 @@ public class ImplCategoriaServiceMongo implements ICategoriaServiceMongo {
     ICategoriaRepositoryMongo icategoriaRepositoryMongo;
 
     @Override
-    public List<Categoria> findAll() {
-        List<Categoria> categorias = new ArrayList<>();
+    public List<CategoriaMongo> findAll() {
+        List<CategoriaMongo> categorias = new ArrayList<>();
         categorias = icategoriaRepositoryMongo.findAll();
         return categorias;
     }
 
     @Override
-    public Categoria findById(String id) {
+    public CategoriaMongo findById(String id) {
         try {
-            Categoria categoriaFound = icategoriaRepositoryMongo.findById(id).get();
+            CategoriaMongo categoriaFound = icategoriaRepositoryMongo.findById(id).get();
             return categoriaFound;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -33,14 +33,14 @@ public class ImplCategoriaServiceMongo implements ICategoriaServiceMongo {
     }
 
     @Override
-    public void save(Categoria categoria) {
+    public void save(CategoriaMongo categoria) {
         icategoriaRepositoryMongo.save(categoria);
     }
 
     @Override
     public void deleteById(String id) {
         try{
-            Categoria categoriaFound = icategoriaRepositoryMongo.findById(id).get();
+            CategoriaMongo categoriaFound = icategoriaRepositoryMongo.findById(id).get();
             if (categoriaFound != null){
                 icategoriaRepositoryMongo.deleteById(categoriaFound.getId());
             }

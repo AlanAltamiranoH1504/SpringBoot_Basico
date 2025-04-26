@@ -1,16 +1,14 @@
 package altamirano.hernandez.app1_springboot_2025.models.mongoDB;
 
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
-import java.util.concurrent.CancellationException;
 
 @Document(collection = "categorias")
-public class Categoria {
+public class CategoriaMongo {
     @Id
     private String id;
     @NotBlank(message = "El nombre de la categoria no puede estar vacio")
@@ -21,15 +19,15 @@ public class Categoria {
     private String slug;
 
     //Constructores
-    public Categoria() {}
-    public Categoria(String id) {
+    public CategoriaMongo() {}
+    public CategoriaMongo(String id) {
         this.id = id;
     }
-    public Categoria(String nombre, String slug){
+    public CategoriaMongo(String nombre, String slug){
         this.nombre = nombre;
         this.slug = slug;
     }
-    public Categoria(String id, String nombre, String slug){
+    public CategoriaMongo(String id, String nombre, String slug){
         this.id = id;
         this.nombre = nombre;
         this.slug = slug;
@@ -70,7 +68,7 @@ public class Categoria {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Categoria categoria = (Categoria) o;
+        CategoriaMongo categoria = (CategoriaMongo) o;
         return Objects.equals(id, categoria.id) && Objects.equals(nombre, categoria.nombre) && Objects.equals(slug, categoria.slug);
     }
     @Override
