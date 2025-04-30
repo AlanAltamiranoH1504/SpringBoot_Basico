@@ -42,11 +42,11 @@ public class PdfService {
 
             //Creacion de filas
             for (var producto : productosContenido){
-                table.addCell(new Paragraph(producto.getNombre()).setTextAlignment(TextAlignment.CENTER).setVerticalAlignment(VerticalAlignment.MIDDLE).setPadding(5));
-                table.addCell(new Paragraph(producto.getSlug()).setTextAlignment(TextAlignment.CENTER).setVerticalAlignment(VerticalAlignment.MIDDLE).setPadding(5));
-                table.addCell(new Paragraph(producto.getDescripcion()).setTextAlignment(TextAlignment.CENTER).setVerticalAlignment(VerticalAlignment.MIDDLE).setPadding(5));
-                table.addCell(new Paragraph(producto.getPrecio()).setTextAlignment(TextAlignment.CENTER).setVerticalAlignment(VerticalAlignment.MIDDLE).setPadding(5));
-                table.addCell(new Paragraph(producto.getCategoria().getNombre()).setTextAlignment(TextAlignment.CENTER).setVerticalAlignment(VerticalAlignment.MIDDLE).setPadding(5));
+                table.addCell(styleParagraph(producto.getNombre()));
+                table.addCell(styleParagraph(producto.getSlug()));
+                table.addCell(styleParagraph(producto.getDescripcion()));
+                table.addCell(styleParagraph(producto.getPrecio()));
+                table.addCell(styleParagraph(producto.getCategoria().getNombre()));
             }
 
             //Agregar tabla al archivo y cierre de archivo
@@ -56,5 +56,12 @@ public class PdfService {
         }catch (Exception e){
             throw new RuntimeException("Error en generacion de PDF: " + e.getMessage());
         }
+    }
+
+    private Paragraph styleParagraph(String paragraph){
+        return new Paragraph(paragraph)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setVerticalAlignment(VerticalAlignment.MIDDLE)
+                .setPadding(5);
     }
 }
