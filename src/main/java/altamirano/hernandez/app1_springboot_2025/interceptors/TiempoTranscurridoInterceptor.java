@@ -14,16 +14,27 @@ public class TiempoTranscurridoInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        logger.info("preHandle de TiempoTranscurridoInterceptor");
-        long startTime = System.currentTimeMillis();
-        request.setAttribute("startTime", startTime);
+        //Ejemplo de error
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setContentType("application/json");
 
-        //Simulacion de demora
-        Random random = new Random();
-        Integer delete = random.nextInt(500);
-        Thread.sleep(delete);
+        String json = "{ \"error\": \"Acceso denegado\"}";
+        response.getWriter().write(json);
+        response.getWriter().flush();
 
-        return true;
+        return false;
+//        logger.info("preHandle de TiempoTranscurridoInterceptor");
+//        long startTime = System.currentTimeMillis();
+//        request.setAttribute("startTime", startTime);
+//
+//        System.out.println("Username: " + request.getParameter("username"));
+//
+//        //Simulacion de demora
+//        Random random = new Random();
+//        Integer delete = random.nextInt(500);
+//        Thread.sleep(delete);
+//
+//        return true;
     }
 
     @Override

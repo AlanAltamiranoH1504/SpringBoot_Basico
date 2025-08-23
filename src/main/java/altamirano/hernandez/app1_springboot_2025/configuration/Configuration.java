@@ -1,5 +1,6 @@
 package altamirano.hernandez.app1_springboot_2025.configuration;
 
+import altamirano.hernandez.app1_springboot_2025.interceptors.HorarioInterceptor;
 import altamirano.hernandez.app1_springboot_2025.interceptors.InterceptorPrueba;
 import altamirano.hernandez.app1_springboot_2025.interceptors.TiempoTranscurridoInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -24,5 +25,9 @@ public class Configuration implements WebMvcConfigurer {
         //Interceptor tiempo transcurrido
         registry.addInterceptor(new TiempoTranscurridoInterceptor())
                 .addPathPatterns("/formController/**");
+
+        //Interceptor de horarios
+        registry.addInterceptor(new HorarioInterceptor())
+                .addPathPatterns("/horarioController/**");
     }
 }
