@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/formController")
 public class FormController {
 
     @GetMapping("/form")
