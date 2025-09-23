@@ -8,13 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,6 +20,23 @@ import java.util.Map;
 public class ClienteController {
     @Autowired
     private IClienteService iClienteService;
+
+    @GetMapping("")
+    public ResponseEntity<?> list_clientes() {
+        Map<String, Object> json = new HashMap<>();
+        try {
+            List<Cliente> clientes = iClienteService.findAll();
+            if (clientes.size() <= 0) {
+                json.put("status", false);
+                json.put("message", "No existen registros de clientes");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(json);
+            }
+            json.put("clientes", clientes);
+            return ResponseEntity.status(HttpStatus.OK).body(json);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @PostMapping("")
     public ResponseEntity<?> save_cliente(@Validated @RequestBody CreateClienteDTO createClienteDTO, BindingResult bindingResult) {

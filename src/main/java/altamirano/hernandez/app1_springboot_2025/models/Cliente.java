@@ -1,8 +1,6 @@
 package altamirano.hernandez.app1_springboot_2025.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 
 import java.util.Date;
 import java.util.Objects;
