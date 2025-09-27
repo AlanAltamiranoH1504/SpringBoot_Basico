@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImplClienteService implements IClienteService{
@@ -18,8 +19,18 @@ public class ImplClienteService implements IClienteService{
     }
 
     @Override
-    public Cliente findById(int id) {
-        return iClienteRepository.findById(id).get();
+    public Optional<Cliente> findById(int id) {
+        return iClienteRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Cliente> findByEmail(String email) {
+        return iClienteRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<Cliente> findByCellPhone(String cellphone) {
+        return iClienteRepository.findByCellPhone(cellphone);
     }
 
     @Override
